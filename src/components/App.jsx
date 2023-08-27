@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import shortid from 'shortid';
 import Container from './Container/Container';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-
+const initialState = [
+  { id: shortid.generate(), name: 'Rosie Simpson', number: '459-12-56' },
+  { id: shortid.generate(), name: 'Hermione Kline', number: '443-89-12' },
+  { id: shortid.generate(), name: 'Eden Clements', number: '645-17-79' },
+  { id: shortid.generate(), name: 'Annie Copeland', number: '227-91-26' },
+];
 function App() {
-  const [contacts, setContacts] = useState([
-    { id: shortid.generate(), name: 'Rosie Simpson', number: '459-12-56' },
-    { id: shortid.generate(), name: 'Hermione Kline', number: '443-89-12' },
-    { id: shortid.generate(), name: 'Eden Clements', number: '645-17-79' },
-    { id: shortid.generate(), name: 'Annie Copeland', number: '227-91-26' },
-  ]);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
+  const [contacts, setContacts] = useState(() => {
     const storedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (storedContacts) {
-      setContacts(storedContacts);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+    return storedContacts || initialState;
+  });
+  const [filter, setFilter] = useState('');
 
   const addContact = ({ name, number }) => {
     if (
